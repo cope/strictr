@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+'use strict';
+
+import * as path from 'path';
+
+import * as _ from 'lodash';
+
+import getConfig from './functions/get.config';
+import checkFolder from './functions/check.folder';
+import getFilesListing from './functions/get.files.listing';
+import convertFilesToObjects from './functions/convert.files.to.objects';
+import missingStrictStatement from './functions/missing.strict.statement';
+import getTableFromFileObjects from './functions/get.table.from.file.objects';
+
+export default {
+	run(commander: any) {
+		console.clear();
+
+		const options: any = _.pick(commander, ['config']);
+
+		const root = process.cwd();
+		const config = getConfig(root, options?.config);
+
+		const {srcFolderName, testFolderName} = config;
+		let {filesExtension} = config;
+
+		const srcFolder = path.join(root, srcFolderName);
+		checkFolder(srcFolder, 'Source');
+
+		const testFolder = path.join(root, testFolderName);
+		checkFolder(testFolder, 'Test');
+
+		let srcFiles = getFilesListing(srcFolder, filesExtension);
+		let testFiles = getFilesListing(testFolder, filesExtension);
+
+		srcFiles = _.filter(srcFiles, missingStrictStatement);
+		if (!_.isEmpty(srcFiles)) {
+			console.log('\nSource files missing the strict statement:');
+			console.log(getTableFromFileObjects(convertFilesToObjects(srcFiles)).toString());
+		} else console.log('\nNo source files are missing the strict statement.');
+
+		testFiles = _.filter(testFiles, missingStrictStatement);
+		if (!_.isEmpty(testFiles)) {
+			console.log('\nTest files missing the strict statement:');
+			console.log(getTableFromFileObjects(convertFilesToObjects(testFiles)).toString());
+		} else console.log('\nNo test files are missing the strict statement.');
+
+		console.log('\n');
+	}
+};
