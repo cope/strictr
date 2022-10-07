@@ -11,12 +11,14 @@ import getFilesListing from './functions/get.files.listing';
 import convertFilesToObjects from './functions/convert.files.to.objects';
 import missingStrictStatement from './functions/missing.strict.statement';
 import getTableFromFileObjects from './functions/get.table.from.file.objects';
+import addUseStrict from './functions/add.use.strict';
 
 export default {
 	run(commander: any) {
 		console.clear();
 
-		const options: any = _.pick(commander, ['config']);
+		const options: any = _.pick(commander, ['config', 'add']);
+		const {add = false} = options;
 
 		const root = process.cwd();
 		const config = getConfig(root, options?.config);
@@ -44,6 +46,22 @@ export default {
 			console.log('\nTest files missing the strict statement:');
 			console.log(getTableFromFileObjects(convertFilesToObjects(testFiles)).toString());
 		} else console.log('\nNo test files are missing the strict statement.');
+
+		if (add) {
+			if (_.isEmpty(srcFiles) && _.isEmpty(testFiles)) {
+				console.log('\nAdd is set to true, but there is nothing to add.');
+			} else {
+				console.log("\nAdd is set to true. Adding 'use strict'; where I can...\n");
+
+				_.each(srcFiles, (file) => {
+					addUseStrict(file);
+				});
+				console.log('');
+				_.each(testFiles, (file) => {
+					addUseStrict(file);
+				});
+			}
+		}
 
 		console.log('\n');
 	}

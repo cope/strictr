@@ -30,9 +30,10 @@ Check for missing strict statement in files.
 Use .strictr.json config file to override default settings.                                
                                                                                            
 Options:                                                                                   
-  -V, --version          output the version number                                         
+  -V, --version          output the version number
+  -a, --add              Add missing strict statements (default: false)
   -c, --config <config>  Alternative config file (must be .json) (default: ".strictr.json")
-  -h, --help             display help for command        
+  -h, --help             display help for command       
 ```
 
 ## run strictr check
