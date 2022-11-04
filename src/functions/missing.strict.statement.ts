@@ -3,11 +3,14 @@
 
 import * as fs from 'fs';
 
-import {includes, split} from 'lodash';
+import {find, includes, map, split, trim} from 'lodash';
 
 const missingStrictStatement = (file: string): boolean => {
 	const content = fs.readFileSync(file, 'utf-8');
-	const lines = split(content, '\n');
-	return !includes(lines, "'use strict';");
+
+	let lines = split(content, '\n');
+	lines = map(lines, trim);
+
+	return !find(lines, (line: string) => includes(line, 'use strict'));
 };
 export default missingStrictStatement;
