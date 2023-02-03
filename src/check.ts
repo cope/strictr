@@ -5,13 +5,14 @@ import * as path from 'path';
 
 import * as _ from 'lodash';
 
+import bail from './functions/bail';
 import getConfig from './functions/get.config';
 import checkFolder from './functions/check.folder';
+import addUseStrict from './functions/add.use.strict';
 import getFilesListing from './functions/get.files.listing';
 import convertFilesToObjects from './functions/convert.files.to.objects';
 import missingStrictStatement from './functions/missing.strict.statement';
 import getTableFromFileObjects from './functions/get.table.from.file.objects';
-import addUseStrict from './functions/add.use.strict';
 
 export default {
 	run(commander: any) {
@@ -61,8 +62,11 @@ export default {
 					addUseStrict(file);
 				});
 			}
-		}
 
-		console.log('\n');
+			console.log('\n');
+		} else {
+			if (!_.isEmpty(srcFiles)) bail();
+			if (!_.isEmpty(testFiles)) bail();
+		}
 	}
 };
