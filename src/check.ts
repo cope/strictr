@@ -14,6 +14,8 @@ import convertFilesToObjects from './functions/convert.files.to.objects';
 import missingStrictStatement from './functions/missing.strict.statement';
 import getTableFromFileObjects from './functions/get.table.from.file.objects';
 
+const clc = require('cli-color');
+
 export default {
 	run(commander: any) {
 		console.clear();
@@ -38,21 +40,21 @@ export default {
 
 		srcFiles = _.filter(srcFiles, missingStrictStatement);
 		if (!_.isEmpty(srcFiles)) {
-			console.log('\nSource files missing the strict statement:');
-			console.log(getTableFromFileObjects(convertFilesToObjects(srcFiles)).toString());
-		} else console.log('\nNo source files are missing the strict statement.');
+			console.log(clc.red('\nSource files missing the ' + clc.italic("'use strict';") + ' statement:'));
+			console.log(clc.red(getTableFromFileObjects(convertFilesToObjects(srcFiles)).toString()));
+		} else console.log(clc.green('\nNo source files are missing the ' + clc.italic("'use strict';") + ' statement.'));
 
 		testFiles = _.filter(testFiles, missingStrictStatement);
 		if (!_.isEmpty(testFiles)) {
-			console.log('\nTest files missing the strict statement:');
-			console.log(getTableFromFileObjects(convertFilesToObjects(testFiles)).toString());
-		} else console.log('\nNo test files are missing the strict statement.');
+			console.log(clc.red('\nTest files missing the ' + clc.italic("'use strict';") + ' statement:'));
+			console.log(clc.red(getTableFromFileObjects(convertFilesToObjects(testFiles)).toString()));
+		} else console.log(clc.green('\nNo test files are missing the ' + clc.italic("'use strict';") + ' statement.'));
 
 		if (add) {
 			if (_.isEmpty(srcFiles) && _.isEmpty(testFiles)) {
-				console.log('\nAdd is set to true, but there is nothing to add.');
+				console.log(clc.magenta('\nAdd is set to true, but there is nothing to add.'));
 			} else {
-				console.log("\nAdd is set to true. Adding 'use strict'; where I can...\n");
+				console.log(clc.blue("\nAdd is set to true. Adding 'use strict'; where I can...\n"));
 
 				_.each(srcFiles, (file) => {
 					addUseStrict(file);
@@ -67,10 +69,10 @@ export default {
 		} else {
 			if (!_.isEmpty(srcFiles) || !_.isEmpty(testFiles)) {
 				let message = '\n';
-				if (!_.isEmpty(srcFiles)) message += 'There are source files missing the strict statement!\n';
-				if (!_.isEmpty(testFiles)) message += 'There are test files missing the strict statement!\n';
+				if (!_.isEmpty(srcFiles)) message += 'There are source files missing the ' + clc.italic("'use strict';") + ' statement!\n';
+				if (!_.isEmpty(testFiles)) message += 'There are test files missing the ' + clc.italic("'use strict';") + ' statement!\n';
 
-				bail(message);
+				bail(clc.red(message));
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 {
 	"name": "strictr",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "strict statement checker",
 	"engines": {
 		"node": ">=16.0.0"
