@@ -7,7 +7,7 @@ import {first, join, split, startsWith, tail, trim} from 'lodash';
 const clc = require('cli-color');
 
 const addUseStrict = (path: string): void => {
-	if (!fs.existsSync(path)) return console.log(clc.red('\nERROR: ' + clc.bold(`${path}`) + ' does not exist.'));
+	if (!fs.existsSync(path)) return console.log(clc.red('\nStrictr ERROR: ' + clc.bold(`${path}`) + ' does not exist.'));
 
 	const content = fs.readFileSync(path, 'utf-8');
 	let lines: string[] = split(trim(content), '\n');
@@ -26,7 +26,7 @@ const addUseStrict = (path: string): void => {
 		: lines;
 
 	fs.writeFileSync(path, join(lines, '\n'), 'utf-8');
-	console.log(clc.blue(' - Added ' + clc.italic("'use strict';") + ' to' + clc.bold(path) + '...'));
+	console.log(clc.blue(' - Strictr Added ' + clc.italic("'use strict';") + ' to' + clc.bold(path) + '...'));
 };
 
 export default addUseStrict;
