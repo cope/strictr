@@ -65,8 +65,13 @@ export default {
 
 			console.log('\n');
 		} else {
-			if (!_.isEmpty(srcFiles)) bail();
-			if (!_.isEmpty(testFiles)) bail();
+			if (!_.isEmpty(srcFiles) || !_.isEmpty(testFiles)) {
+				let message = '\n';
+				if (!_.isEmpty(srcFiles)) message += 'There are source files missing the strict statement!\n';
+				if (!_.isEmpty(testFiles)) message += 'There are test files missing the strict statement!\n';
+
+				bail(message);
+			}
 		}
 	}
 };
