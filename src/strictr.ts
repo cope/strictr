@@ -15,8 +15,6 @@
 import {Command} from 'commander';
 import check from './check';
 
-const clc = require('cli-color');
-
 const commander: any = new Command();
 const packageJson = require('../package.json');
 
@@ -28,6 +26,4 @@ commander
 	.parse(process.argv);
 
 const options = commander.opts();
-if (!options?.help) console.log('NOTE: ' + clc.italic('\nUse .strictr.json config file to override default Strictr settings.\n'));
-
 check.run(options);
