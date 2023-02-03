@@ -18,8 +18,6 @@ const clc = require('cli-color');
 
 export default {
 	run(commander: any) {
-		console.clear();
-
 		const options: any = _.pick(commander, ['config', 'add']);
 		const {add = false} = options;
 
