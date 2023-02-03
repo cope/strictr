@@ -74,7 +74,7 @@ export default {
 
 				bail(clc.red(message));
 			} else {
-				console.log(clc.green('\n✅  Everything is awesome!\n'));
+				console.log(clc.green('\n✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
 			}
 		}
 	}
