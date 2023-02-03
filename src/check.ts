@@ -50,30 +50,30 @@ export default {
 
 		if (add) {
 			if (_.isEmpty(srcFiles) && _.isEmpty(testFiles)) {
-				console.log(clc.magenta('\nAdd is set to true, but there is nothing to add.'));
-			} else {
-				console.log(clc.blue("\nAdd is set to true. Adding 'use strict'; where I can...\n"));
-
-				_.each(srcFiles, (file) => {
-					addUseStrict(file);
-				});
-				console.log('');
-				_.each(testFiles, (file) => {
-					addUseStrict(file);
-				});
+				return console.log(clc.green('\n✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
 			}
+
+			console.log(clc.blue('\n🔍  Add is set to true. Adding ' + clc.italic("'use strict';") + ' where I can...\n'));
+
+			_.each(srcFiles, (file) => {
+				addUseStrict(file);
+			});
+			console.log('');
+			_.each(testFiles, (file) => {
+				addUseStrict(file);
+			});
 
 			console.log('\n');
 		} else {
-			if (!_.isEmpty(srcFiles) || !_.isEmpty(testFiles)) {
-				let message = '\n';
-				if (!_.isEmpty(srcFiles)) message += clc.bold('ERROR:') + ' There are source files missing the ' + clc.italic("'use strict';") + ' statement!\n';
-				if (!_.isEmpty(testFiles)) message += clc.bold('ERROR:') + ' There are test files missing the ' + clc.italic("'use strict';") + ' statement!\n';
-
-				bail(clc.red(message));
-			} else {
-				console.log(clc.green('\n✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
+			if (_.isEmpty(srcFiles) && _.isEmpty(testFiles)) {
+				return console.log(clc.green('\n✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
 			}
+
+			let message = '\n';
+			if (!_.isEmpty(srcFiles)) message += clc.bold('ERROR:') + ' There are source files missing the ' + clc.italic("'use strict';") + ' statement!\n';
+			if (!_.isEmpty(testFiles)) message += clc.bold('ERROR:') + ' There are test files missing the ' + clc.italic("'use strict';") + ' statement!\n';
+
+			bail(clc.red(message));
 		}
 	}
 };
