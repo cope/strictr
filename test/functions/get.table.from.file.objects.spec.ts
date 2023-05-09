@@ -1,3 +1,6 @@
-'use strict';
+import {expect} from 'chai';
 
-describe('get.table.from.file.objects.ts tests', () => it('should be implemented'));
+describe('get.table.from.file.objects tests', () => {
+	expect(true).to.be.true;
+	it('should be implemented');
+});

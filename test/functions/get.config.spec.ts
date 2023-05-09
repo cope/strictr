@@ -1,3 +1,6 @@
-'use strict';
+import {expect} from 'chai';
 
-describe('get.config.ts tests', () => it('should be implemented'));
+describe('get.config tests', () => {
+	expect(true).to.be.true;
+	it('should be implemented');
+});

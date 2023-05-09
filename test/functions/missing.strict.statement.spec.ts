@@ -1,3 +1,6 @@
-'use strict';
+import {expect} from 'chai';
 
-describe('missing.strict.statement.ts tests', () => it('should be implemented'));
+describe('missing.strict.statement tests', () => {
+	expect(true).to.be.true;
+	it('should be implemented');
+});

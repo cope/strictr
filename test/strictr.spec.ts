@@ -1,3 +1,6 @@
-'use strict';
+import {expect} from 'chai';
 
-describe('strictr.ts tests', () => it('should be implemented'));
+describe('strictr tests', () => {
+	expect(true).to.be.true;
+	it('should be implemented');
+});

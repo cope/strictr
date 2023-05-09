@@ -1,3 +1,6 @@
-'use strict';
+import {expect} from 'chai';
 
-describe('check.folder.ts tests', () => it('should be implemented'));
+describe('check.folder tests', () => {
+	expect(true).to.be.true;
+	it('should be implemented');
+});
