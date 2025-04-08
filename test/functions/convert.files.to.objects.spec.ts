@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 
 describe('convert.files.to.objects tests', () => {
-	expect(true).to.be.true;
+	// TODO: implement tests
 	it('should be implemented');
 });

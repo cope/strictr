@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 
 describe('fix.extension tests', () => {
-	expect(true).to.be.true;
+	// TODO: implement tests
 	it('should be implemented');
 });

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 
 describe('get.config tests', () => {
-	expect(true).to.be.true;
+	// TODO: implement tests
 	it('should be implemented');
 });
