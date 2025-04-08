@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+'use strict';
 
 describe('missing.strict.statement tests', () => {
 	// TODO: implement tests

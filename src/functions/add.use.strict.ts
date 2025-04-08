@@ -26,7 +26,6 @@ const addUseStrict = (path: string): void => {
 		: lines;
 
 	fs.writeFileSync(path, join(lines, '\n'), 'utf-8');
-	console.log(clc.blue(' - Strictr Added ' + clc.italic("'use strict';") + ' to' + clc.bold(path) + '...'));
+	console.log(clc.blue(' - Strictr Added ' + clc.italic("'use strict';") + ' to ' + clc.bold(path) + '...'));
 };
-
 export default addUseStrict;
