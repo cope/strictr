@@ -1,0 +1,21 @@
+meta:
+  schema-version: 0.1.0
+  created-on: "2024-02-14T09:49:17Z"
+  cli-version: 0.2.0
+projects:
+  cope-strictr:
+    targets:
+      - package.json
+    manager:
+      ecosystem: node
+      name: pnpm
+      version: 7.24.0
+    overrides:
+      json5:
+        2.2.1:
+          use: 2.2.1-sp1
+      semver:
+        6.3.0:
+          use: 6.3.0-sp1
+        5.7.1:
+          use: 5.7.1-sp1
