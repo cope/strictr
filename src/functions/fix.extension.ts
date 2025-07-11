@@ -3,7 +3,7 @@
 
 import {startsWith, toLower} from 'lodash';
 
-const fixExtension = (ext: string): string => {
+const fixExtension: Function = (ext: string): string => {
 	if (!startsWith(ext, '.')) ext = '.' + ext;
 	return toLower(ext);
 };

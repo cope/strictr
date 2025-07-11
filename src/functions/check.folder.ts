@@ -6,7 +6,7 @@ import bail from './bail';
 
 const clc = require('cli-color');
 
-const checkFolder = (folder: string, type: string): void => {
+const checkFolder: Function = (folder: string, type: string): void => {
 	if (!fs.existsSync(folder)) {
 		bail(clc.red(`\nERROR: ${type} folder ` + clc.bold(`${folder}`) + ' does not exist.'));
 	}

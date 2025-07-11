@@ -6,16 +6,16 @@ import {first, join, split, startsWith, tail, trim} from 'lodash';
 
 const clc = require('cli-color');
 
-const addUseStrict = (path: string): void => {
+const addUseStrict: Function = (path: string): void => {
 	if (!fs.existsSync(path)) return console.log(clc.red('\nStrictr ERROR: ' + clc.bold(`${path}`) + ' does not exist.'));
 
-	const content = fs.readFileSync(path, 'utf-8');
+	const content: string = fs.readFileSync(path, 'utf-8');
 	let lines: string[] = split(trim(content), '\n');
 
-	const one: string = trim(first(lines));
-	const hasBang = startsWith(one, '#!/');
+	const one: string = trim(first(lines) || '');
+	const hasBang: boolean = startsWith(one, '#!/');
 
-	let allButFirst = hasBang //
+	let allButFirst: string[] = hasBang //
 		? tail(lines)
 		: lines;
 	allButFirst = split(trim(join(allButFirst, '\n')), '\n');

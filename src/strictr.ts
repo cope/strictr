@@ -6,7 +6,7 @@
  *
  * Check for missing strict statement in files.
  * Usage:
- * -a, --add            Add missing strict statements (default: false)
+ * -f, --fix            Fix missing strict statements (default: false)
  * -c, --config         Alternative config file (must be .json)
  *
  * <no params>          Lists files with missing 'use strict'; statement
@@ -14,16 +14,17 @@
 
 import {Command} from 'commander';
 import check from './check';
+import {PackageJson, CommanderOptions} from './types';
 
-const commander: any = new Command();
-const packageJson = require('../package.json');
+const commander: Command = new Command();
+const packageJson: PackageJson = require('../package.json');
 
 commander
 	.version(packageJson.version)
 	.description('Check for missing strict statement in files.\nUse .strictr.json config file to override default settings.')
-	.option('-a, --add', 'Add missing strict statements', false)
+	.option('-f, --fix', 'Fix missing strict statements', false)
 	.option('-c, --config <config>', 'Alternative config file (must be .json)', '.strictr.json')
 	.parse(process.argv);
 
-const options = commander.opts();
+const options: CommanderOptions = commander.opts();
 check.run(options);

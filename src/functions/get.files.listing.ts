@@ -7,21 +7,21 @@ import * as _ from 'lodash';
 
 import fixExtension from './fix.extension';
 
-const getFilesListing = (root: string, ext: string): any[] => {
+const getFilesListing: Function = (root: string, ext: string): string[] => {
 	ext = fixExtension(ext);
 
 	let files: string[] = [];
-	const children = fs.readdirSync(root);
+	const children: string[] = fs.readdirSync(root);
 
-	const subfiles = _.filter(children, (child: string) => !fs.lstatSync(path.join(root, child)).isDirectory());
-	_.each(subfiles, (file) => {
-		const fileExt = path.extname(file);
+	const subfiles: string[] = _.filter(children, (child: string) => !fs.lstatSync(path.join(root, child)).isDirectory());
+	_.each(subfiles, (file: string) => {
+		const fileExt: string = path.extname(file);
 		if (ext === _.toLower(fileExt)) files.push(path.join(root, file));
 	});
 
-	const subfolders = _.filter(children, (child: string) => fs.lstatSync(path.join(root, child)).isDirectory());
-	_.each(subfolders, (folder) => {
-		const folderFullPath = path.join(root, folder);
+	const subfolders: string[] = _.filter(children, (child: string) => fs.lstatSync(path.join(root, child)).isDirectory());
+	_.each(subfolders, (folder: string) => {
+		const folderFullPath: string = path.join(root, folder);
 		files = _.concat(files, getFilesListing(folderFullPath, ext));
 	});
 

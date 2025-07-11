@@ -6,49 +6,52 @@ import path from 'path';
 
 import {cloneDeep, find, set} from 'lodash';
 import fixExtension from './fix.extension';
+import {Config} from '../types';
 
-const _hasJS = (srcFolder: string) => {
-	const files = fs.readdirSync(srcFolder);
-	const hasJS = find(files, (file) => {
-		const ext = path.extname(file);
+const hasJS: Function = (srcFolder: string): boolean => {
+	const files: string[] = fs.readdirSync(srcFolder);
+	const foundJS: string | undefined = find(files, (file: string): boolean => {
+		const ext: string = path.extname(file);
 		return ext === '.js';
 	});
-	return !!hasJS;
+	return !!foundJS;
 };
 
-const _getDefaultConfig = (root: string) => {
-	const defaultConfig = {
+const getDefaultConfig: Function = (root: string): Config => {
+	const defaultConfig: Config = {
 		srcFolderName: 'src',
 		testFolderName: 'test',
 		filesExtension: '.ts'
 	};
 
 	try {
-		let config = cloneDeep(defaultConfig);
+		const config: Config = cloneDeep(defaultConfig);
 
-		const srcFolder = path.join(root, 'src');
+		const srcFolder: string = path.join(root, 'src');
 		if (fs.lstatSync(srcFolder).isDirectory()) {
-			if (_hasJS(srcFolder)) {
+			if (hasJS(srcFolder)) {
 				set(config, 'filesExtension', '.js');
 			}
 		}
 
 		return config;
 	} catch (error) {
+		console.error(error);
 		return defaultConfig;
 	}
 };
 
-const getConfig = (root: string, configFile: string) => {
-	const defaultConfig = _getDefaultConfig(root);
+const getConfig: Function = (root: string, configFile: string): Config => {
+	const defaultConfig: Config = getDefaultConfig(root);
 	try {
-		const userConfig = require(path.join(root, configFile));
+		const userConfig: Partial<Config> = require(path.join(root, configFile));
 
-		const config = {...defaultConfig, ...userConfig};
+		const config: Config = {...defaultConfig, ...userConfig};
 		set(config, 'filesExtension', fixExtension(config.filesExtension));
 
 		return config;
 	} catch (error) {
+		console.error(error);
 		return defaultConfig;
 	}
 };

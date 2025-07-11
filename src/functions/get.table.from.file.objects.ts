@@ -3,14 +3,15 @@
 
 import * as _ from 'lodash';
 import Table from 'cli-table';
+import {FileObject} from '../types';
 
-const getTableFromFileObjects = (objects: string[], includeNewPath?: boolean): Table => {
-	let columns = ['#', 'File', 'Path'];
+const getTableFromFileObjects: Function = (objects: FileObject[], includeNewPath?: boolean): Table => {
+	const columns: string[] = ['#', 'File', 'Path'];
 	if (includeNewPath) columns.push('New Path');
 
-	const table = new Table({style: {head: ['black'], compact: true}, head: columns});
-	let id = 0;
-	_.each(objects, (o: any) => table.push([++id, ..._.values(_.omit(o, ['full']))]));
+	const table: Table = new Table({style: {head: ['black'], compact: true}, head: columns});
+	let id: number = 0;
+	_.each(objects, (o: FileObject) => table.push([String(++id), ..._.values(_.omit(o, ['full']))]));
 	return table;
 };
 

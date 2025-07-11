@@ -13,38 +13,39 @@ import getFilesListing from './functions/get.files.listing';
 import convertFilesToObjects from './functions/convert.files.to.objects';
 import missingStrictStatement from './functions/missing.strict.statement';
 import getTableFromFileObjects from './functions/get.table.from.file.objects';
+import {CommanderOptions, Config} from './types';
 
 const clc = require('cli-color');
 
 export default {
-	run(commander: any) {
+	run: (commander: CommanderOptions): void => {
 		console.log(clc.blue.bgGreen.bold('\n*** STRICTR ***'));
 
-		const options: any = _.pick(commander, ['config', 'add']);
+		const options: Partial<CommanderOptions> = _.pick(commander, ['config', 'add']);
 		const {add = false} = options;
 
-		const root = process.cwd();
-		const config = getConfig(root, options?.config);
+		const root: string = process.cwd();
+		const config: Config = getConfig(root, options?.config || '.strictr.json');
 
 		const {srcFolderName, testFolderName} = config;
-		let {filesExtension} = config;
+		const {filesExtension} = config;
 
-		const srcFolder = path.join(root, srcFolderName);
+		const srcFolder: string = path.join(root, srcFolderName);
 		checkFolder(srcFolder, 'Source');
 
-		const testFolder = path.join(root, testFolderName);
+		const testFolder: string = path.join(root, testFolderName);
 		checkFolder(testFolder, 'Test');
 
-		let srcFiles = getFilesListing(srcFolder, filesExtension);
-		let testFiles = getFilesListing(testFolder, filesExtension);
+		let srcFiles: string[] = getFilesListing(srcFolder, filesExtension);
+		let testFiles: string[] = getFilesListing(testFolder, filesExtension);
 
-		srcFiles = _.filter(srcFiles, missingStrictStatement);
+		srcFiles = srcFiles.filter(missingStrictStatement);
 		if (!_.isEmpty(srcFiles)) {
 			console.log(clc.red('\nStrictr: Source files missing the ' + clc.italic("'use strict';") + ' statement:'));
 			console.log(clc.red(getTableFromFileObjects(convertFilesToObjects(srcFiles)).toString()));
 		} else console.log(clc.green('\n✅  Strictr: No source files are missing the ' + clc.italic("'use strict';") + ' statement.'));
 
-		testFiles = _.filter(testFiles, missingStrictStatement);
+		testFiles = testFiles.filter(missingStrictStatement);
 		if (!_.isEmpty(testFiles)) {
 			console.log(clc.red('\nStrictr: Test files missing the ' + clc.italic("'use strict';") + ' statement:'));
 			console.log(clc.red(getTableFromFileObjects(convertFilesToObjects(testFiles)).toString()));
@@ -57,11 +58,11 @@ export default {
 
 			console.log(clc.blue('\n🔍  Strictr: Add is set to true. Adding ' + clc.italic("'use strict';") + ' where I can...\n'));
 
-			_.each(srcFiles, (file) => {
+			_.each(srcFiles, (file: string): void => {
 				addUseStrict(file);
 			});
 			console.log('');
-			_.each(testFiles, (file) => {
+			_.each(testFiles, (file: string): void => {
 				addUseStrict(file);
 			});
 
@@ -71,7 +72,7 @@ export default {
 				return console.log(clc.green('\n✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
 			}
 
-			let message = '\n';
+			let message: string = '\n';
 			if (!_.isEmpty(srcFiles)) message += clc.bold('Strictr ERROR:') + ' There are source files missing the ' + clc.italic("'use strict';") + ' statement!\n';
 			if (!_.isEmpty(testFiles)) message += clc.bold('Strictr ERROR:') + ' There are test files missing the ' + clc.italic("'use strict';") + ' statement!\n';
 
