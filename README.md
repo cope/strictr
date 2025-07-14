@@ -9,10 +9,11 @@ You can change default configuration via ```.strictr.json``` file:
 ```
 {
 	"srcFolderName": "src",                 // default: "src"
-	"filesExtension": "ts",                 // default detects: "ts" for typescript and "js" for javascript
 	"testFolderName": "test",               // default: "test"
 }
 ```
+
+**Note**: strictr automatically checks both `.js` and `.ts` files.
 
 ## help
 
@@ -31,7 +32,7 @@ Use .strictr.json config file to override default settings.
                                                                                            
 Options:                                                                                   
   -V, --version          output the version number
-  -a, --add              Add missing strict statements (default: false)
+  -f, --fix              Fix missing strict statements (default: false)
   -c, --config <config>  Alternative config file (must be .json) (default: ".strictr.json")
   -h, --help             display help for command       
 ```

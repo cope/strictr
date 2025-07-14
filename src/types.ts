@@ -4,7 +4,6 @@
 export interface Config {
 	srcFolderName: string;
 	testFolderName: string;
-	filesExtension: string;
 }
 
 export interface FileObject {
