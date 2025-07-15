@@ -3,7 +3,8 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import * as _ from 'lodash';
+
+import _ from 'lodash';
 
 const getFilesListing: Function = (root: string): string[] => {
 	const supportedExtensions: string[] = ['.js', '.ts'];

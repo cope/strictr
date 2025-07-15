@@ -3,7 +3,8 @@
 
 import * as os from 'node:os';
 
-import * as _ from 'lodash';
+import _ from 'lodash';
+
 import {FileObject} from '../types';
 
 const convertFilesToObjects: Function = (files: string[]): FileObject[] => {
