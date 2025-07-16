@@ -32,7 +32,7 @@ describe('get.config tests', () => {
 	test('should return default config when config file does not exist', () => {
 		mockedFs.existsSync.mockReturnValue(false);
 
-		const result = getConfig('/project/root', '.strictr.json');
+		const result: object = getConfig('/project/root', '.strictr.json');
 
 		expect(result).toEqual({
 			directories: ['src', 'test']

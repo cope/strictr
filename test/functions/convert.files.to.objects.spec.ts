@@ -15,8 +15,8 @@ describe('convert.files.to.objects tests', () => {
 	test('should convert Windows file paths to objects', () => {
 		mockedOs.platform.mockReturnValue('win32');
 
-		const files = ['C:\\Users\\test\\file.ts', 'D:\\projects\\src\\index.js'];
-		const result = convertFilesToObjects(files);
+		const files: string[] = ['C:\\Users\\test\\file.ts', 'D:\\projects\\src\\index.js'];
+		const result: object[] = convertFilesToObjects(files);
 
 		expect(result).toEqual([
 			{name: 'file.ts', path: 'C:\\Users\\test', full: 'C:\\Users\\test\\file.ts'},

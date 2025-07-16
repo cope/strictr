@@ -13,7 +13,7 @@ const convertFilesToObjects: Function = (files: string[]): FileObject[] => {
 
 	return _.map(files, (f: string): FileObject => {
 		const parts: string[] = _.split(f, separator);
-		const name: string = parts.pop() || '';
+		const name: string = parts.pop() ?? '';
 		const path: string = _.join(parts, separator);
 		const full: string = path + separator + name;
 		return {name, path, full};

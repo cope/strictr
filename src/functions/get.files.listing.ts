@@ -15,7 +15,7 @@ const getFilesListing: Function = (root: string): string[] => {
 	const subfiles: string[] = _.filter(children, (child: string) => !fs.lstatSync(path.join(root, child)).isDirectory());
 	_.each(subfiles, (file: string) => {
 		const fileExt: string = path.extname(file);
-		if (supportedExtensions.includes(_.toLower(fileExt))) {
+		if (supportedExtensions.includes(fileExt.toLowerCase())) {
 			files.push(path.join(root, file));
 		}
 	});

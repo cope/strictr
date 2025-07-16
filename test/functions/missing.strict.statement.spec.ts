@@ -13,26 +13,26 @@ describe('missing.strict.statement tests', () => {
 	});
 
 	test('should return true when use strict is missing', () => {
-		const fileContent = `console.log('hello world');
+		const fileContent: string = `console.log('hello world');
 function test() {
 	return 'no strict mode';
 }`;
 		mockedFs.readFileSync.mockReturnValue(fileContent);
 
-		const result = missingStrictStatement('test.js');
+		const result: boolean = missingStrictStatement('test.js');
 		expect(result).toBe(true);
 		expect(mockedFs.readFileSync).toHaveBeenCalledWith('test.js', 'utf-8');
 	});
 
 	test('should return false when use strict is present', () => {
-		const fileContent = `'use strict';
+		const fileContent: string = `'use strict';
 console.log('hello world');
 function test() {
 	return 'strict mode enabled';
 }`;
 		mockedFs.readFileSync.mockReturnValue(fileContent);
 
-		const result = missingStrictStatement('test.js');
+		const result: boolean = missingStrictStatement('test.js');
 		expect(result).toBe(false);
 	});
 

@@ -22,7 +22,7 @@ describe('bail tests', () => {
 	});
 
 	test('should log message and exit with code 2', () => {
-		const message = 'Test error message';
+		const message: string = 'Test error message';
 
 		expect(() => {
 			bail(message);
