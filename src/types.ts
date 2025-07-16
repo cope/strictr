@@ -2,8 +2,7 @@
 'use strict';
 
 export interface Config {
-	srcFolderName: string;
-	testFolderName: string;
+	directories: string[];
 }
 
 export interface FileObject {

@@ -8,18 +8,9 @@ import {cloneDeep} from 'lodash';
 import {Config} from '../types';
 
 const getDefaultConfig: Function = (): Config => {
-	const defaultConfig: Config = {
-		srcFolderName: 'src',
-		testFolderName: 'test'
+	return {
+		directories: ['src', 'test']
 	};
-
-	try {
-		const config: Config = cloneDeep(defaultConfig);
-		return config;
-	} catch (error) {
-		console.error(error);
-		return defaultConfig;
-	}
 };
 
 const getConfig: Function = (root: string, configFile: string): Config => {
@@ -35,9 +26,7 @@ const getConfig: Function = (root: string, configFile: string): Config => {
 	try {
 		const userConfig: Partial<Config> = require(configPath);
 
-		const config: Config = {...defaultConfig, ...userConfig};
-
-		return config;
+		return {...defaultConfig, ...userConfig};
 	} catch (error) {
 		// Only log error if file exists but can't be read/parsed
 		console.error(error);

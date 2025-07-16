@@ -8,8 +8,7 @@ You can change default configuration via ```.strictr.json``` file:
 
 ```
 {
-	"srcFolderName": "src",                 // default: "src"
-	"testFolderName": "test",               // default: "test"
+	"directories": ["src", "test"]          // default: ["src", "test"]
 }
 ```
 

@@ -35,8 +35,7 @@ describe('get.config tests', () => {
 		const result = getConfig('/project/root', '.strictr.json');
 
 		expect(result).toEqual({
-			srcFolderName: 'src',
-			testFolderName: 'test'
+			directories: ['src', 'test']
 		});
 		expect(mockedFs.existsSync).toHaveBeenCalledWith('/project/root/.strictr.json');
 		expect(mockConsoleError).not.toHaveBeenCalled();
@@ -47,8 +46,7 @@ describe('get.config tests', () => {
 
 		// Mock the config file module
 		const userConfig = {
-			srcFolderName: 'source',
-			testFolderName: 'tests'
+			directories: ['source', 'tests']
 		};
 
 		jest.doMock('/project/root/.strictr.json', () => userConfig, {virtual: true});
@@ -56,8 +54,7 @@ describe('get.config tests', () => {
 		const result = getConfig('/project/root', '.strictr.json');
 
 		expect(result).toEqual({
-			srcFolderName: 'source',
-			testFolderName: 'tests'
+			directories: ['source', 'tests']
 		});
 		expect(mockedFs.existsSync).toHaveBeenCalledWith('/project/root/.strictr.json');
 		expect(mockConsoleError).not.toHaveBeenCalled();
@@ -71,8 +68,7 @@ describe('get.config tests', () => {
 		const result = getConfig('/project/root', 'custom.config.json');
 
 		expect(result).toEqual({
-			srcFolderName: 'src',
-			testFolderName: 'test'
+			directories: ['src', 'test']
 		});
 		expect(mockedFs.existsSync).toHaveBeenCalledWith('/project/root/custom.config.json');
 		expect(mockConsoleError).not.toHaveBeenCalled();
@@ -84,8 +80,7 @@ describe('get.config tests', () => {
 		const result = getConfig('/different/path', '.strictr.json');
 
 		expect(result).toEqual({
-			srcFolderName: 'src',
-			testFolderName: 'test'
+			directories: ['src', 'test']
 		});
 		expect(mockedFs.existsSync).toHaveBeenCalledWith('/different/path/.strictr.json');
 		expect(mockConsoleError).not.toHaveBeenCalled();
