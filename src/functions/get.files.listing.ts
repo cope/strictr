@@ -4,29 +4,27 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import _ from 'lodash';
-
 const getFilesListing: Function = (root: string): string[] => {
 	const supportedExtensions: string[] = ['.js', '.ts'];
 
 	let files: string[] = [];
 	const children: string[] = fs.readdirSync(root);
 
-	const subfiles: string[] = _.filter(children, (child: string) => !fs.lstatSync(path.join(root, child)).isDirectory());
-	_.each(subfiles, (file: string) => {
+	const subfiles: string[] = children.filter((child: string): boolean => !fs.lstatSync(path.join(root, child)).isDirectory());
+	subfiles.forEach((file: string): void => {
 		const fileExt: string = path.extname(file);
 		if (supportedExtensions.includes(fileExt.toLowerCase())) {
 			files.push(path.join(root, file));
 		}
 	});
 
-	const subfolders: string[] = _.filter(children, (child: string) => fs.lstatSync(path.join(root, child)).isDirectory());
-	_.each(subfolders, (folder: string) => {
+	const subfolders: string[] = children.filter((child: string): boolean => fs.lstatSync(path.join(root, child)).isDirectory());
+	subfolders.forEach((folder: string): void => {
 		const folderFullPath: string = path.join(root, folder);
-		files = _.concat(files, getFilesListing(folderFullPath));
+		files = files.concat(getFilesListing(folderFullPath));
 	});
 
-	return _.sortBy(files);
+	return files.sort();
 };
 
 export default getFilesListing;

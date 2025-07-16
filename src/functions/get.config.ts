@@ -4,7 +4,6 @@
 import * as fs from 'fs';
 import path from 'path';
 
-import {cloneDeep} from 'lodash';
 import {Config} from '../types';
 
 const getDefaultConfig: Function = (): Config => {
