@@ -51,12 +51,12 @@ export default {
 			console.log(clc.red('\nStrictr: Files missing the ' + clc.italic("'use strict';") + ' statement:'));
 			console.log(clc.red(getTableFromFileObjects(convertFilesToObjects(filesWithoutStrict)).toString()));
 		} else {
-			console.log(clc.green('\n✅  Strictr: No files are missing the ' + clc.italic("'use strict';") + ' statement.'));
+			console.log(clc.green('✅  Strictr: No files are missing the ' + clc.italic("'use strict';") + ' statement.'));
 		}
 
 		if (fix) {
 			if (_.isEmpty(filesWithoutStrict)) {
-				return console.log(clc.green('\n✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
+				return console.log(clc.green('✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
 			}
 
 			console.log(clc.blue('\n🔍  Strictr: Fix is set to true. Adding ' + clc.italic("'use strict';") + ' where I can...\n'));
@@ -68,7 +68,7 @@ export default {
 			console.log('\n');
 		} else {
 			if (_.isEmpty(filesWithoutStrict)) {
-				return console.log(clc.green('\n✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
+				return console.log(clc.green('✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
 			}
 
 			const message: string = '\n' + clc.bold('Strictr ERROR:') + ' There are files missing the ' + clc.italic("'use strict';") + ' statement!\n';
