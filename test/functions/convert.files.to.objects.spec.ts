@@ -61,4 +61,13 @@ describe('convert.files.to.objects tests', () => {
 			{name: 'file.txt', path: '/Users/john/Documents', full: '/Users/john/Documents/file.txt'}
 		]);
 	});
+
+	test('should handle empty filename (edge case)', () => {
+		mockedOs.platform.mockReturnValue('linux');
+
+		const files = [''];
+		const result = convertFilesToObjects(files);
+
+		expect(result).toEqual([{name: '', path: '', full: '/'}]);
+	});
 });

@@ -182,4 +182,15 @@ describe('check tests', () => {
 		expect(mockedAddUseStrict).toHaveBeenCalledWith('/test/root/src/file1.js');
 		expect(mockedAddUseStrict).toHaveBeenCalledTimes(1);
 	});
+
+	test('should use default config when no config option provided', () => {
+		const options: CommanderOptions = {fix: false};
+
+		mockedGetFilesListing.mockReturnValue([]);
+		mockedMissingStrictStatement.mockReturnValue(false);
+
+		check.run(options);
+
+		expect(mockedGetConfig).toHaveBeenCalledWith('/test/root', '.strictr.json');
+	});
 });
