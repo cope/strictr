@@ -26,17 +26,15 @@ export default {
 		const {fix = false} = options;
 
 		const root: string = process.cwd();
-		const config: Config = getConfig(root, options?.config || '.strictr.json');
+		const config: Config = getConfig(root, options.config || '.strictr.json');
 
 		const {directories} = config;
 
-		// Check all directories exist and are valid
 		_.each(directories, (dir: string): void => {
 			const dirPath: string = path.join(root, dir);
 			checkFolder(dirPath, dir);
 		});
 
-		// Collect all files from all directories
 		let allFiles: string[] = [];
 		_.each(directories, (dir: string): void => {
 			const dirPath: string = path.join(root, dir);
@@ -44,7 +42,6 @@ export default {
 			allFiles = allFiles.concat(files);
 		});
 
-		// Filter files missing strict statement
 		const filesWithoutStrict: string[] = allFiles.filter(missingStrictStatement);
 
 		if (!_.isEmpty(filesWithoutStrict)) {

@@ -1,7 +1,12 @@
 'use strict';
 
-// Mock the check module
 jest.mock('../src/check');
+jest.mock('commander', () => {
+	const command: any = {};
+	['version', 'description', 'option', 'parse'].forEach((method: string) => (command[method] = jest.fn(() => command)));
+	command.opts = jest.fn(() => ({fix: false}));
+	return {Command: jest.fn(() => command)};
+});
 import check from '../src/check';
 
 describe('strictr tests', () => {
@@ -14,10 +19,9 @@ describe('strictr tests', () => {
 		const mockRun = jest.fn();
 		check.run = mockRun;
 
-		// Clear the module cache and re-import
 		delete require.cache[require.resolve('../src/strictr')];
 		require('../src/strictr');
 
-		expect(mockRun).toHaveBeenCalled();
+		expect(mockRun).toHaveBeenCalledWith({fix: false});
 	});
 });

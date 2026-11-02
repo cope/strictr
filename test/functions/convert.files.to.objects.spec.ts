@@ -3,7 +3,6 @@
 import * as os from 'node:os';
 import convertFilesToObjects from '../../src/functions/convert.files.to.objects';
 
-// Mock os module
 jest.mock('node:os');
 const mockedOs = os as jest.Mocked<typeof os>;
 

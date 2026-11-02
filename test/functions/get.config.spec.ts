@@ -4,20 +4,16 @@ import * as fs from 'fs';
 import * as path from 'path';
 import getConfig from '../../src/functions/get.config';
 
-// Mock fs module
 jest.mock('fs');
 const mockedFs = fs as jest.Mocked<typeof fs>;
 
-// Mock path module
 jest.mock('path');
 const mockedPath = path as jest.Mocked<typeof path>;
 
-// Mock console.error
 const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 describe('get.config tests', () => {
 	beforeEach(() => {
-		// Setup default mocks
 		mockedPath.join.mockImplementation((...args) => args.join('/'));
 	});
 
@@ -44,7 +40,6 @@ describe('get.config tests', () => {
 	test('should merge user config with default config when file exists', () => {
 		mockedFs.existsSync.mockReturnValue(true);
 
-		// Mock the config file module
 		const userConfig = {
 			directories: ['source', 'tests']
 		};
@@ -84,5 +79,27 @@ describe('get.config tests', () => {
 		});
 		expect(mockedFs.existsSync).toHaveBeenCalledWith('/different/path/.strictr.json');
 		expect(mockConsoleError).not.toHaveBeenCalled();
+	});
+
+	test('should log error and return default config when config file cannot be loaded', () => {
+		const error: Error = new Error('cannot load config');
+		mockedFs.existsSync.mockReturnValue(true);
+
+		jest.doMock(
+			'/project/root/broken.json',
+			() => {
+				throw error;
+			},
+			{virtual: true}
+		);
+
+		const result = getConfig('/project/root', 'broken.json');
+
+		expect(result).toEqual({
+			directories: ['src', 'test']
+		});
+		expect(mockConsoleError).toHaveBeenCalledWith(error);
+
+		jest.dontMock('/project/root/broken.json');
 	});
 });

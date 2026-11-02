@@ -12,18 +12,14 @@ const addUseStrict: Function = (path: string): void => {
 	const content: string = fs.readFileSync(path, 'utf-8');
 	let lines: string[] = split(trim(content), '\n');
 
-	const one: string = trim(first(lines) || '');
+	const one: string = trim(first(lines));
 	const hasBang: boolean = startsWith(one, '#!/');
 
-	let allButFirst: string[] = hasBang //
-		? tail(lines)
-		: lines;
+	let allButFirst: string[] = hasBang ? tail(lines) : lines;
 	allButFirst = split(trim(join(allButFirst, '\n')), '\n');
 	lines = ["'use strict';", '', ...allButFirst];
 
-	lines = hasBang //
-		? [one, ...lines]
-		: lines;
+	lines = hasBang ? [one, ...lines] : lines;
 
 	fs.writeFileSync(path, join(lines, '\n'), 'utf-8');
 	console.log(clc.blue(' - Strictr Added ' + clc.italic("'use strict';") + ' to ' + clc.bold(path) + '...'));

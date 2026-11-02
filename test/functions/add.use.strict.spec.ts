@@ -3,11 +3,9 @@
 import * as fs from 'fs';
 import addUseStrict from '../../src/functions/add.use.strict';
 
-// Mock fs module
 jest.mock('fs');
 const mockedFs = fs as jest.Mocked<typeof fs>;
 
-// Mock console.log
 let consoleLogSpy: jest.SpyInstance;
 
 describe('add.use.strict tests', () => {
@@ -63,5 +61,17 @@ describe('add.use.strict tests', () => {
 		expect(mockedFs.readFileSync).toHaveBeenCalledWith(filePath, 'utf-8');
 		expect(mockedFs.writeFileSync).toHaveBeenCalledWith(filePath, expectedContent, 'utf-8');
 		expect(consoleLogSpy).toHaveBeenCalled();
+	});
+
+	test('should add use strict to empty file', () => {
+		const filePath: string = '/test/empty.js';
+
+		mockedFs.existsSync.mockReturnValue(true);
+		mockedFs.readFileSync.mockReturnValue('');
+		mockedFs.writeFileSync.mockImplementation(() => {});
+
+		addUseStrict(filePath);
+
+		expect(mockedFs.writeFileSync).toHaveBeenCalledWith(filePath, "'use strict';\n\n", 'utf-8');
 	});
 });
