@@ -1,9 +1,9 @@
 {
 	"name": "strictr",
-	"version": "0.6.1",
+	"version": "0.6.2",
 	"description": "strict statement checker",
 	"engines": {
-		"node": ">=22.11.0"
+		"node": ">=26.12.1"
 	},
 	"repository": "https://github.com/cope/strictr.git",
 	"author": "Predrag Stojadinovic <Predrag@Stojadinovic.net>",
