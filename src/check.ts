@@ -20,6 +20,12 @@ const clc = require('cli-color');
 
 export default {
 	run: (commander: CommanderOptions): void => {
+		const start: number = performance.now();
+		const awesome = (): void => {
+			console.log(clc.green('✅  ' + clc.bold('Strictr') + ': Everything is awesome!'));
+			console.log(clc.blackBright('⏱️  Strictr: finished in ' + ((performance.now() - start) / 1000).toFixed(2) + 's\n'));
+		};
+
 		console.log(clc.blue.bgGreen.bold('\n*** STRICTR ***'));
 
 		const options: Partial<CommanderOptions> = _.pick(commander, ['config', 'fix']);
@@ -53,7 +59,7 @@ export default {
 
 		if (fix) {
 			if (_.isEmpty(filesWithoutStrict)) {
-				return console.log(clc.green('✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
+				return awesome();
 			}
 
 			console.log(clc.blue('\n🔍  Strictr: Fix is set to true. Adding ' + clc.italic("'use strict';") + ' where I can...\n'));
@@ -65,7 +71,7 @@ export default {
 			console.log('\n');
 		} else {
 			if (_.isEmpty(filesWithoutStrict)) {
-				return console.log(clc.green('✅  ' + clc.bold('Strictr') + ': Everything is awesome!\n'));
+				return awesome();
 			}
 
 			const message: string = '\n' + clc.bold('Strictr ERROR:') + ' There are files missing the ' + clc.italic("'use strict';") + ' statement!\n';
