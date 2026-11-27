@@ -24,4 +24,29 @@ describe('strictr tests', () => {
 
 		expect(mockRun).toHaveBeenCalledWith({fix: false});
 	});
+
+	describe('thread pool size', () => {
+		const original: string | undefined = process.env.UV_THREADPOOL_SIZE;
+
+		afterEach(() => {
+			if (original === undefined) delete process.env.UV_THREADPOOL_SIZE;
+			else process.env.UV_THREADPOOL_SIZE = original;
+		});
+
+		test('should default to 64 when not set', () => {
+			delete process.env.UV_THREADPOOL_SIZE;
+
+			jest.isolateModules(() => require('../src/strictr'));
+
+			expect(process.env.UV_THREADPOOL_SIZE).toBe('64');
+		});
+
+		test('should keep an existing value', () => {
+			process.env.UV_THREADPOOL_SIZE = '8';
+
+			jest.isolateModules(() => require('../src/strictr'));
+
+			expect(process.env.UV_THREADPOOL_SIZE).toBe('8');
+		});
+	});
 });
