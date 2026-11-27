@@ -19,7 +19,7 @@ import getTableFromFileObjects from './functions/get.table.from.file.objects';
 const clc = require('cli-color');
 
 export default {
-	run: (commander: CommanderOptions): void => {
+	run: async (commander: CommanderOptions): Promise<void> => {
 		const start: number = performance.now();
 		const awesome = (): void => {
 			console.log(clc.green('✅  ' + clc.bold('Strictr') + ': Everything is awesome!'));
@@ -48,7 +48,8 @@ export default {
 			allFiles = allFiles.concat(files);
 		});
 
-		const filesWithoutStrict: string[] = allFiles.filter(missingStrictStatement);
+		const missing: boolean[] = await Promise.all(allFiles.map(missingStrictStatement));
+		const filesWithoutStrict: string[] = allFiles.filter((_file: string, index: number): boolean => missing[index]);
 
 		if (!_.isEmpty(filesWithoutStrict)) {
 			console.log(clc.red('\nStrictr: Files missing the ' + clc.italic("'use strict';") + ' statement:'));

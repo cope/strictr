@@ -56,13 +56,13 @@ describe('check tests', () => {
 		jest.restoreAllMocks();
 	});
 
-	test('should run successfully with no missing strict statements', () => {
+	test('should run successfully with no missing strict statements', async () => {
 		const options: CommanderOptions = {config: '.strictr.json', fix: false};
 
 		mockedGetFilesListing.mockReturnValue(['/test/root/src/file1.js', '/test/root/src/file2.js']);
 		mockedMissingStrictStatement.mockReturnValue(false);
 
-		check.run(options);
+		await check.run(options);
 
 		expect(mockedGetConfig).toHaveBeenCalledWith('/test/root', '.strictr.json');
 		expect(mockedCheckFolder).toHaveBeenCalledWith('/test/root/src', 'src');
@@ -75,28 +75,28 @@ describe('check tests', () => {
 		expect(mockedBail).not.toHaveBeenCalled();
 	});
 
-	test('should report missing strict statements when fix is false', () => {
+	test('should report missing strict statements when fix is false', async () => {
 		const options: CommanderOptions = {config: '.strictr.json', fix: false};
 
 		mockedGetFilesListing.mockReturnValue(['/test/root/src/file1.js']);
 		mockedMissingStrictStatement.mockReturnValue(true);
 		mockedConvertFilesToObjects.mockReturnValue([{name: 'file1.js', path: '/test/root/src', full: '/test/root/src/file1.js'}]);
 
-		check.run(options);
+		await check.run(options);
 
 		expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('Files missing'));
 		expect(mockedBail).toHaveBeenCalledWith(expect.stringContaining('There are files missing'));
 		expect(mockedAddUseStrict).not.toHaveBeenCalled();
 	});
 
-	test('should fix missing strict statements when fix is true', () => {
+	test('should fix missing strict statements when fix is true', async () => {
 		const options: CommanderOptions = {config: '.strictr.json', fix: true};
 
 		mockedGetFilesListing.mockReturnValue(['/test/root/src/file1.js']);
 		mockedMissingStrictStatement.mockReturnValue(true);
 		mockedConvertFilesToObjects.mockReturnValue([{name: 'file1.js', path: '/test/root/src', full: '/test/root/src/file1.js'}]);
 
-		check.run(options);
+		await check.run(options);
 
 		expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('Files missing'));
 		expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('Fix is set to true'));
@@ -104,27 +104,27 @@ describe('check tests', () => {
 		expect(mockedBail).not.toHaveBeenCalled();
 	});
 
-	test('should handle fix mode with no missing strict statements', () => {
+	test('should handle fix mode with no missing strict statements', async () => {
 		const options: CommanderOptions = {config: '.strictr.json', fix: true};
 
 		mockedGetFilesListing.mockReturnValue(['/test/root/src/file1.js']);
 		mockedMissingStrictStatement.mockReturnValue(false);
 
-		check.run(options);
+		await check.run(options);
 
 		expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('Everything is awesome!'));
 		expect(mockedAddUseStrict).not.toHaveBeenCalled();
 		expect(mockedBail).not.toHaveBeenCalled();
 	});
 
-	test('should handle multiple directories', () => {
+	test('should handle multiple directories', async () => {
 		const options: CommanderOptions = {config: '.strictr.json', fix: false};
 
 		mockedGetConfig.mockReturnValue({directories: ['src', 'test', 'lib']});
 		mockedGetFilesListing.mockReturnValue([]);
 		mockedMissingStrictStatement.mockReturnValue(false);
 
-		check.run(options);
+		await check.run(options);
 
 		expect(mockedCheckFolder).toHaveBeenCalledWith('/test/root/src', 'src');
 		expect(mockedCheckFolder).toHaveBeenCalledWith('/test/root/test', 'test');
@@ -134,7 +134,7 @@ describe('check tests', () => {
 		expect(mockedGetFilesListing).toHaveBeenCalledWith('/test/root/lib');
 	});
 
-	test('should handle multiple files needing fixes', () => {
+	test('should handle multiple files needing fixes', async () => {
 		const options: CommanderOptions = {config: '.strictr.json', fix: true};
 
 		mockedGetFilesListing.mockReturnValue(['/test/root/src/file1.js', '/test/root/src/file2.js']);
@@ -144,54 +144,54 @@ describe('check tests', () => {
 			{name: 'file2.js', path: '/test/root/src', full: '/test/root/src/file2.js'}
 		]);
 
-		check.run(options);
+		await check.run(options);
 
 		expect(mockedAddUseStrict).toHaveBeenCalledWith('/test/root/src/file1.js');
 		expect(mockedAddUseStrict).toHaveBeenCalledWith('/test/root/src/file2.js');
 		expect(mockedAddUseStrict).toHaveBeenCalled();
 	});
 
-	test('should use custom config file', () => {
+	test('should use custom config file', async () => {
 		const options: CommanderOptions = {config: 'custom.json', fix: false};
 
 		mockedGetFilesListing.mockReturnValue([]);
 		mockedMissingStrictStatement.mockReturnValue(false);
 
-		check.run(options);
+		await check.run(options);
 
 		expect(mockedGetConfig).toHaveBeenCalledWith('/test/root', 'custom.json');
 	});
 
-	test('should handle mixed files with and without strict statements', () => {
+	test('should handle mixed files with and without strict statements', async () => {
 		const options: CommanderOptions = {config: '.strictr.json', fix: true};
 
 		mockedGetFilesListing.mockReturnValue(['/test/root/src/file1.js', '/test/root/src/file2.js']);
 		mockedMissingStrictStatement.mockReturnValueOnce(true).mockReturnValueOnce(false);
 		mockedConvertFilesToObjects.mockReturnValue([{name: 'file1.js', path: '/test/root/src', full: '/test/root/src/file1.js'}]);
 
-		check.run(options);
+		await check.run(options);
 
 		expect(mockedAddUseStrict).toHaveBeenCalledWith('/test/root/src/file1.js');
 		expect(mockedAddUseStrict).toHaveBeenCalledTimes(1);
 	});
 
-	test('should use default config when no config option provided', () => {
+	test('should use default config when no config option provided', async () => {
 		const options: CommanderOptions = {fix: false};
 
 		mockedGetFilesListing.mockReturnValue([]);
 		mockedMissingStrictStatement.mockReturnValue(false);
 
-		check.run(options);
+		await check.run(options);
 
 		expect(mockedGetConfig).toHaveBeenCalledWith('/test/root', '.strictr.json');
 	});
 
-	test('should default fix to false when not provided', () => {
+	test('should default fix to false when not provided', async () => {
 		mockedGetFilesListing.mockReturnValue(['/test/root/src/file1.js']);
 		mockedMissingStrictStatement.mockReturnValue(true);
 		mockedConvertFilesToObjects.mockReturnValue([{name: 'file1.js', path: '/test/root/src', full: '/test/root/src/file1.js'}]);
 
-		check.run({} as CommanderOptions);
+		await check.run({} as CommanderOptions);
 
 		expect(mockedGetConfig).toHaveBeenCalledWith('/test/root', '.strictr.json');
 		expect(mockedBail).toHaveBeenCalledWith(expect.stringContaining('There are files missing'));

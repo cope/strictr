@@ -1,16 +1,11 @@
 #!/usr/bin/env node
 'use strict';
 
-import * as fs from 'fs';
+import {readFile} from 'fs/promises';
 
-import {find, includes, map, split, trim} from 'lodash';
+const missingStrictStatement: (file: string) => Promise<boolean> = async (file: string): Promise<boolean> => {
+	const content: string = await readFile(file, 'utf-8');
 
-const missingStrictStatement: (file: string) => boolean = (file: string): boolean => {
-	const content: string = fs.readFileSync(file, 'utf-8');
-
-	let lines: string[] = split(content, '\n');
-	lines = map(lines, trim);
-
-	return !find(lines, (line: string) => includes(line, 'use strict'));
+	return !content.includes('use strict');
 };
 export default missingStrictStatement;

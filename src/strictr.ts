@@ -16,6 +16,8 @@ import {Command} from 'commander';
 import check from './check';
 import {PackageJson, CommanderOptions} from './types';
 
+process.env.UV_THREADPOOL_SIZE = '64';
+
 const commander: Command = new Command();
 const packageJson: PackageJson = require('../package.json');
 
